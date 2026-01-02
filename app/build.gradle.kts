@@ -78,4 +78,10 @@ dependencies {
     //=====//   Glide Image    //=====//
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     kapt ("com.github.bumptech.glide:compiler:4.16.0")
+
+    //======//      Candle Stick Graph      //===========//
+//    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    //======//      Image     //===========//
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

@@ -1,19 +1,18 @@
-package com.sifu.mynotebook.presentation.view
+package com.sifu.mynotebook.presentation.view.coin
 
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.sifu.mynotebook.R
 import com.sifu.mynotebook.databinding.ActivityMainBinding
-import com.sifu.mynotebook.presentation.viewmodel.CoinViewmodel
+import com.sifu.mynotebook.presentation.state.CoinState
+import com.sifu.mynotebook.presentation.view.coinDetail.CoinDetailActivity
+import com.sifu.mynotebook.presentation.viewmodel.coin.CoinViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    private fun updateUI(state: com.sifu.mynotebook.presentation.state.CoinState) {
+    private fun updateUI(state: CoinState) {
         binding.apply {
             // Handle loading state
             progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
@@ -64,7 +63,9 @@ class MainActivity : AppCompatActivity() {
             // Handle success state
             if (state.coins.isNotEmpty()) {
                 recyclerview.visibility = View.VISIBLE
-                adapter = CoinAdapter(state.coins)
+                adapter = CoinAdapter(state.coins){
+                    navigateToCoinDetail(it)
+                }
                 recyclerview.adapter = adapter
             } else if (!state.isLoading && state.error.isBlank()) {
                 // Empty state
@@ -73,5 +74,9 @@ class MainActivity : AppCompatActivity() {
                 recyclerview.visibility = View.GONE
             }
         }
+    }
+    private fun navigateToCoinDetail(coinId: String) {
+        val intent = CoinDetailActivity.newIntent(this, coinId)
+        startActivity(intent)
     }
 }

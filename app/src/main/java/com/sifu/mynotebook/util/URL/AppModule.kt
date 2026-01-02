@@ -1,7 +1,10 @@
 package com.sifu.mynotebook.util.URL
 
-import com.sifu.mynotebook.data.repository.CoinRepositoryImpl
-import com.sifu.mynotebook.domain.repository.CoinRepository
+import com.sifu.mynotebook.data.repository.coin.CoinRepositoryImpl
+import com.sifu.mynotebook.data.repository.coinId.CoinDetailRepositoryIMPL
+import com.sifu.mynotebook.domain.repository.coin.CoinRepository
+import com.sifu.mynotebook.domain.repository.coinid.CoinDetailRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,5 +50,16 @@ object AppModule {
     @Singleton
     fun provideCoinsRepository(api: ApiService): CoinRepository {
         return CoinRepositoryImpl(api)
+    }
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    abstract class RepositoryModule {
+        @Binds
+        @Singleton
+        abstract fun bindCoinRepository(
+            repoImpl: CoinDetailRepositoryIMPL
+        ): CoinDetailRepository
+
     }
 }
